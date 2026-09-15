@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Ainul</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    min-height:100vh;
+    font-family:Arial,sans-serif;
+    background:linear-gradient(135deg,#ffb6d9,#ed82b4,#9b5b9d);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+    overflow-x:hidden;
+    position:relative;
+}
+
+body::before{
+    content:"♥  ✦  ♡  ✧  ♥  ✦  ♡";
+    position:fixed;
+    top:8%;
+    left:0;
+    width:100%;
+    text-align:center;
+    font-size:24px;
+    letter-spacing:18px;
+    opacity:.35;
+    animation:float 5s ease-in-out infinite;
+}
+
+@keyframes float{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-15px)}
+}
+
+.card{
+    width:90%;
+    max-width:400px;
+    padding:32px 24px;
+    text-align:center;
+    background:rgba(255,255,255,.20);
+    border:2px solid rgba(255,255,255,.45);
+    border-radius:30px;
+    box-shadow:0 20px 50px rgba(80,0,50,.35);
+    backdrop-filter:blur(10px);
+    position:relative;
+    z-index:2;
+}
+
+.icon{
+    font-size:65px;
+    margin-bottom:8px;
+    animation:bounce 2s infinite;
+}
+
+@keyframes bounce{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-8px)}
+}
+
+h1{
+    margin-bottom:10px;
+}
+
+p{
+    font-size:14px;
+    color:#ffeaf5;
+    line-height:1.6;
+}
+
+input{
+    width:100%;
+    padding:15px;
+    margin-top:15px;
+    border:none;
+    outline:none;
+    border-radius:15px;
+    font-size:15px;
+}
+
+input:focus{
+    box-shadow:0 0 0 3px rgba(255,255,255,.45);
+}
+
+button{
+    width:100%;
+    padding:15px;
+    margin-top:18px;
+    border:none;
+    border-radius:30px;
+    background:white;
+    color:#a13d69;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.2s;
+}
+
+button:active{
+    transform:scale(.96);
+}
+
+#error{
+    display:none;
+    margin-top:15px;
+    padding:10px;
+    border-radius:12px;
+    background:rgba(255,0,80,.3);
+    font-size:13px;
+}
+
+#dashboard{
+    display:none;
+    width:90%;
+    max-width:700px;
+    position:relative;
+    z-index:2;
+}
+
+.dashboard-box{
+    padding:30px;
+    text-align:center;
+    background:rgba(255,255,255,.20);
+    border:2px solid rgba(255,255,255,.4);
+    border-radius:30px;
+    box-shadow:0 20px 50px rgba(80,0,50,.35);
+    backdrop-filter:blur(10px);
+}
+
+.quote{
+    margin-top:20px;
+    padding:25px;
+    border-radius:20px;
+    background:rgba(255,255,255,.15);
+    font-size:18px;
+    line-height:1.7;
+    font-style:italic;
+}
+
+.next{
+    background:white;
+    color:#a13d69;
+}
+
+.logout{
+    background:rgba(255,255,255,.25);
+    color:white;
+}
+
+.hint{
+    margin-top:12px;
+    font-size:12px;
+    opacity:.8;
+}
+
+@media(max-width:450px){
+    .card{
+        padding:30px 20px;
+    }
+
+    .dashboard-box{
+        padding:25px 18px;
+    }
+
+    .quote{
+        font-size:16px;
+        padding:20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div id="login" class="card">
+    <div class="icon">🎀</div>
+
+    <h1>Selamat Datang</h1>
+
+    <p>
+        Masuk ke dunia kecil penuh kalimat romantis ✨
+    </p>
+
+    <input
+        type="text"
+        id="nama"
+        placeholder="Masukkan nama kamu"
+        autocomplete="off"
+    >
+
+    <input
+        type="password"
+        id="password"
+        placeholder="Masukkan kata sandi"
+    >
+
+    <button type="button" onclick="masuk()">
+        💗 MASUK ✨
+    </button>
+
+    <div id="error"></div>
+
+    <div class="hint">
+        Password demo: <b>ainul16</b>
+    </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+    <div class="dashboard-box">
+
+        <div class="icon">💗</div>
+
+        <h1>
+            Hai, <span id="namaTampil"></span> 🌸
+        </h1>
+
+        <p>
+            Selamat datang di dashboard Ainul ✨
+        </p>
+
+        <div class="quote" id="kalimat">
+            "Kadang aku tidak butuh alasan untuk tersenyum,
+            cukup mengingat seseorang yang berarti."
+        </div>
+
+        <button class="next" type="button" onclick="kalimatBerikutnya()">
+            🌷 Kalimat Berikutnya
+        </button>
+
+        <button class="logout" type="button" onclick="keluar()">
+            🚪 Keluar
+        </button>
+
+    </div>
+</div>
+
+<script>
+var passwordBenar = "ainul16";
+
+var daftarKalimat = [
+    "Kadang aku tidak butuh alasan untuk tersenyum, cukup mengingat seseorang yang berarti.",
+    "Kalau hati punya tempat untuk pulang, mungkin namamu adalah salah satunya.",
+    "Ada seseorang yang tanpa sadar selalu berhasil membuat hari terasa lebih indah.",
+    "Aku tidak tahu bagaimana masa depan nanti, tapi aku senang pernah mengenalmu.",
+    "Beberapa orang datang sebentar, tetapi meninggalkan cerita yang sulit dilupakan.",
+    "Jarak mungkin membuat kita tidak selalu dekat, tetapi kenangan tetap punya caranya sendiri untuk tinggal.",
+    "Senyummu mungkin sederhana, tetapi entah kenapa selalu berhasil membuat suasana menjadi lebih hangat.",
+    "Aku suka cara sederhana sebuah perhatian bisa membuat seseorang merasa begitu berarti.",
+    "Tidak perlu menjadi sempurna untuk menjadi seseorang yang istimewa.",
+    "Jika hari ini terasa berat, semoga ada seseorang yang mengingatkan bahwa kamu tetap berharga.",
+    "Terkadang rasa nyaman hadir bukan karena banyaknya kata, tetapi karena seseorang membuat kita merasa menjadi diri sendiri.",
+    "Aku percaya, perasaan yang tulus tidak selalu harus memiliki banyak kata untuk bisa dirasakan.",
+    "Ada nama yang tidak sering disebut, tetapi diam-diam selalu ada di dalam doa.",
+    "Semoga siapa pun yang membaca ini selalu menemukan alasan untuk tersenyum setiap hari.",
+    "Kalau kebahagiaan bisa disimpan dalam sebuah kenangan, aku ingin menyimpan momen-momen indah selamanya."
+];
+
+var nomor = 0;
+
+function masuk(){
+    var namaInput = document.getElementById("nama");
+    var passwordInput = document.getElementById("password");
+    var error = document.getElementById("error");
+
+    var nama = namaInput.value.trim();
+    var password = passwordInput.value;
+
+    if(nama === ""){
+        error.innerHTML = "⚠️ Masukkan nama terlebih dahulu.";
+        error.style.display = "block";
+        namaInput.focus();
+        return;
+    }
+
+    if(password === ""){
+        error.innerHTML = "⚠️ Masukkan kata sandi.";
+        error.style.display = "block";
+        passwordInput.focus();
+        return;
+    }
+
+    if(password === passwordBenar){
+        document.getElementById("namaTampil").textContent = nama;
+        document.getElementById("login").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
+        error.style.display = "none";
+    }else{
+        error.innerHTML = "❌ Kata sandi salah. Coba lagi.";
+        error.style.display = "block";
+        passwordInput.focus();
+    }
+}
+
+document.getElementById("password").addEventListener("keydown", function(event){
+    if(event.key === "Enter"){
+        masuk();
+    }
+});
+
+function kalimatBerikutnya(){
+    nomor++;
+
+    if(nomor >= daftarKalimat.length){
+        nomor = 0;
+    }
+
+    document.getElementById("kalimat").textContent =
+        '"' + daftarKalimat[nomor] + '"';
+}
+
+function keluar(){
+    document.getElementById("dashboard").style.display = "none";
+    document.getElementById("login").style.display = "block";
+    document.getElementById("password").value = "";
+}
+</script>
+
+</body>
+</html>
