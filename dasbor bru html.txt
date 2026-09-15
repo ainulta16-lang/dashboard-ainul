@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dashboard Ainul</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    min-height:100vh;
+    font-family:Arial,sans-serif;
+    background:linear-gradient(135deg,#ffb6d9,#ed82b4,#9b5b9d);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+}
+
+/* LOGIN */
+
+#login{
+    width:90%;
+    max-width:390px;
+    padding:35px 25px;
+    text-align:center;
+
+    background:rgba(255,255,255,.22);
+    border:2px solid rgba(255,255,255,.4);
+    border-radius:30px;
+
+    box-shadow:0 20px 50px rgba(80,0,50,.35);
+}
+
+.icon{
+    font-size:65px;
+    margin-bottom:10px;
+}
+
+h1{
+    margin-bottom:10px;
+}
+
+p{
+    font-size:14px;
+    color:#ffeaf5;
+    line-height:1.6;
+}
+
+input{
+    width:100%;
+    padding:15px;
+    margin-top:15px;
+
+    border:none;
+    outline:none;
+    border-radius:15px;
+
+    font-size:15px;
+}
+
+input:focus{
+    box-shadow:0 0 0 3px rgba(255,255,255,.4);
+}
+
+button{
+    width:100%;
+    padding:15px;
+    margin-top:18px;
+
+    border:none;
+    border-radius:30px;
+
+    background:white;
+    color:#a13d69;
+
+    font-size:16px;
+    font-weight:bold;
+
+    cursor:pointer;
+}
+
+button:active{
+    transform:scale(.96);
+}
+
+#error{
+    display:none;
+
+    margin-top:15px;
+    padding:10px;
+
+    border-radius:12px;
+
+    background:rgba(255,0,80,.3);
+
+    font-size:13px;
+}
+
+
+/* DASHBOARD */
+
+#dashboard{
+    display:none;
+
+    width:90%;
+    max-width:700px;
+}
+
+.dashboard-box{
+    padding:30px;
+
+    text-align:center;
+
+    background:rgba(255,255,255,.20);
+
+    border:2px solid rgba(255,255,255,.4);
+
+    border-radius:30px;
+
+    box-shadow:0 20px 50px rgba(80,0,50,.35);
+}
+
+.quote{
+    margin-top:20px;
+    padding:25px;
+
+    border-radius:20px;
+
+    background:rgba(255,255,255,.15);
+
+    font-size:18px;
+    line-height:1.7;
+    font-style:italic;
+}
+
+.next{
+    background:white;
+    color:#a13d69;
+}
+
+.logout{
+    background:rgba(255,255,255,.25);
+    color:white;
+}
+
+@media(max-width:450px){
+
+    #login{
+        padding:30px 20px;
+    }
+
+    .dashboard-box{
+        padding:25px 18px;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =====================
+     LOGIN
+===================== -->
+
+<div id="login">
+
+    <div class="icon">
+        🎀
+    </div>
+
+    <h1>
+        Selamat Datang
+    </h1>
+
+    <p>
+        Temukan sedikit kata bijak untuk menemani harimu ✨
+    </p>
+
+
+    <input
+        type="text"
+        id="nama"
+        placeholder="Masukkan nama kamu"
+    >
+
+
+    <input
+        type="password"
+        id="password"
+        placeholder="Masukkan kata sandi"
+    >
+
+
+    <button
+        type="button"
+        onclick="masuk()">
+
+        💗 MASUK ✨
+
+    </button>
+
+
+    <div id="error"></div>
+
+</div>
+
+
+
+<!-- =====================
+     DASHBOARD
+===================== -->
+
+<div id="dashboard">
+
+    <div class="dashboard-box">
+
+        <h1>
+            Hai,
+            <span id="namaTampil"></span>
+            🌸
+        </h1>
+
+        <p>
+            Semoga satu kalimat hari ini bisa menjadi penyemangatmu ✨
+        </p>
+
+
+        <div
+            class="quote"
+            id="kalimat">
+
+            "Tidak perlu terburu-buru. Setiap orang memiliki waktunya
+            sendiri untuk tumbuh dan mencapai tujuan."
+
+        </div>
+
+
+        <button
+            class="next"
+            type="button"
+            onclick="kalimatBerikutnya()">
+
+            🌷 Kalimat Berikutnya
+
+        </button>
+
+
+        <button
+            class="logout"
+            type="button"
+            onclick="keluar()">
+
+            Keluar
+
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+/* ==================================
+   PASSWORD LOGIN
+================================== */
+
+var passwordBenar = "ainul16";
+
+
+/* ==================================
+   FUNGSI MASUK
+================================== */
+
+function masuk(){
+
+    var namaInput =
+        document.getElementById("nama");
+
+    var passwordInput =
+        document.getElementById("password");
+
+    var error =
+        document.getElementById("error");
+
+
+    var nama =
+        namaInput.value.trim();
+
+    var password =
+        passwordInput.value;
+
+
+    /* CEK NAMA */
+
+    if(nama === ""){
+
+        error.innerHTML =
+            "⚠️ Masukkan nama terlebih dahulu.";
+
+        error.style.display =
+            "block";
+
+        namaInput.focus();
+
+        return;
+
+    }
+
+
+    /* CEK PASSWORD */
+
+    if(password === ""){
+
+        error.innerHTML =
+            "⚠️ Masukkan kata sandi.";
+
+        error.style.display =
+            "block";
+
+        passwordInput.focus();
+
+        return;
+
+    }
+
+
+    /* PASSWORD BENAR */
+
+    if(password === passwordBenar){
+
+        document
+        .getElementById("namaTampil")
+        .innerHTML = nama;
+
+
+        document
+        .getElementById("login")
+        .style.display = "none";
+
+
+        document
+        .getElementById("dashboard")
+        .style.display = "block";
+
+
+        error.style.display =
+            "none";
+
+    }
+
+
+    /* PASSWORD SALAH */
+
+    else{
+
+        error.innerHTML =
+            "❌ Kata sandi salah. Coba lagi.";
+
+        error.style.display =
+            "block";
+
+        passwordInput.focus();
+
+    }
+
+}
+
+
+/* ==================================
+   ENTER UNTUK MASUK
+================================== */
+
+document
+.getElementById("password")
+.addEventListener("keydown",function(event){
+
+    if(event.key === "Enter"){
+
+        masuk();
+
+    }
+
+});
+
+
+/* ==================================
+   KUMPULAN KALIMAT BIJAK
+================================== */
+
+var daftarKalimat = [
+
+    "Jangan menyerah hanya karena hari ini terasa sulit. Kamu masih punya banyak kesempatan untuk mencoba lagi.",
+
+    "Percayalah pada proses. Tidak semua hasil harus datang dengan cepat.",
+
+    "Langkah kecil yang kamu lakukan hari ini bisa menjadi awal dari perubahan besar di masa depan.",
+
+    "Jangan takut gagal. Kegagalan adalah bagian dari proses menuju keberhasilan.",
+
+    "Tetap semangat meskipun belum melihat hasilnya. Usaha yang konsisten akan membawa perubahan.",
+
+    "Kamu tidak harus hebat untuk memulai, tetapi kamu harus memulai untuk menjadi hebat.",
+
+    "Jika kamu lelah, beristirahatlah. Jangan menyerah.",
+
+    "Jangan membandingkan dirimu dengan orang lain. Fokuslah menjadi versi terbaik dari dirimu sendiri.",
+
+    "Kesuksesan membutuhkan kesabaran, kerja keras, dan keberanian untuk terus mencoba.",
+
+    "Tidak ada mimpi yang terlalu besar jika kamu mau berusaha dan tidak mudah menyerah.",
+
+    "Hari ini adalah kesempatan baru untuk memperbaiki diri dan menjadi lebih baik dari kemarin.",
+
+    "Percaya bahwa kamu mampu. Kadang yang kamu butuhkan hanyalah keberanian untuk memulai.",
+
+    "Jangan biarkan kegagalan kemarin menentukan apa yang bisa kamu capai hari ini.",
+
+    "Teruslah berjalan meskipun perlahan. Yang penting kamu tidak berhenti.",
+
+    "Masa depanmu dibentuk oleh apa yang kamu lakukan hari ini.",
+
+    "Saat orang lain meragukanmu, jadikan itu alasan untuk membuktikan bahwa kamu mampu.",
+
+    "Tidak perlu menunggu sempurna untuk memulai. Mulailah sekarang dan belajar sepanjang perjalanan.",
+
+    "Setiap kesulitan yang kamu hadapi sedang mengajarkanmu untuk menjadi lebih kuat.",
+
+    "Jangan takut bermimpi. Mimpi adalah awal dari sebuah pencapaian.",
+
+    "Kamu mungkin belum sampai pada tujuanmu, tetapi setidaknya kamu sudah lebih jauh dari tempat kamu memulai.",
+
+    "Tetap rendah hati ketika berhasil dan tetap kuat ketika gagal.",
+
+    "Kerja keras mungkin tidak selalu terlihat hasilnya hari ini, tetapi tidak akan sia-sia.",
+
+    "Jangan menyerah pada sesuatu yang benar-benar kamu inginkan hanya karena jalannya tidak mudah.",
+
+    "Satu hari yang buruk tidak berarti seluruh hidupmu buruk. Besok adalah kesempatan baru.",
+
+    "Keberanian bukan berarti tidak takut, tetapi tetap melangkah meskipun merasa takut.",
+
+    "Jadikan setiap kesalahan sebagai pelajaran, bukan alasan untuk berhenti.",
+
+    "Kamu tidak perlu menjadi seperti orang lain untuk berhasil. Jadilah dirimu sendiri dan terus berkembang.",
+
+    "Jika kamu ingin melihat perubahan, mulailah dari dirimu sendiri.",
+
+    "Tidak ada usaha kecil jika dilakukan dengan sungguh-sungguh.",
+
+    "Terus belajar, terus mencoba, dan terus percaya bahwa kamu bisa.",
+
+    "Jangan terlalu fokus pada seberapa jauh tujuanmu. Fokuslah pada langkah yang bisa kamu lakukan sekarang.",
+
+    "Kesuksesan bukan tentang siapa yang paling cepat, tetapi siapa yang tetap bertahan dan terus berusaha.",
+
+    "Percayalah, masa sulit tidak akan berlangsung selamanya.",
+
+    "Jangan takut memulai dari nol. Semua orang yang berhasil pernah menjadi seorang pemula.",
+
+    "Tetap semangat. Mungkin hari ini belum berhasil, tetapi bukan berarti kamu tidak akan berhasil selamanya.",
+
+    "Apa yang kamu lakukan dengan tekun hari ini akan menjadi sesuatu yang kamu banggakan di kemudian hari.",
+
+    "Kamu lebih kuat dari yang kamu pikirkan dan lebih mampu dari yang kamu bayangkan.",
+
+    "Jangan berhenti belajar hanya karena pernah melakukan kesalahan.",
+
+    "Tetaplah berusaha sampai suatu hari nanti kamu bisa berkata, 'Aku berhasil karena aku tidak menyerah.'",
+
+    "Jalani prosesnya, nikmati perjalanannya, dan percaya bahwa setiap usaha memiliki waktunya untuk berbuah."
+
+];
+
+
+var nomor = 0;
+
+
+/* ==================================
+   KALIMAT BERIKUTNYA
+================================== */
+
+function kalimatBerikutnya(){
+
+    nomor++;
+
+    if(nomor >= daftarKalimat.length){
+
+        nomor = 0;
+
+    }
+
+
+    document
+    .getElementById("kalimat")
+    .innerHTML =
+        '"' +
+        daftarKalimat[nomor] +
+        '"';
+
+}
+
+
+/* ==================================
+   KELUAR
+================================== */
+
+function keluar(){
+
+    document
+    .getElementById("dashboard")
+    .style.display =
+        "none";
+
+
+    document
+    .getElementById("login")
+    .style.display =
+        "block";
+
+
+    document
+    .getElementById("password")
+    .value = "";
+
+}
+
+</script>
+
+</body>
+</html>
